@@ -1,0 +1,4 @@
+# Diceware Password Generator
+[Dicewarepwd.com](https://dicewarepwd.com/) is a diceware passphrase generator built to avoid the need to use real dices and that aims to create passphrases as strong as the ones generated with dices.  
+If you don't know the [Diceware](http://world.std.com/~reinhold/diceware.html) method, maybe you should if you are concerned about your own security.  
+Finally, if you are curious to discover how [dicewarepwd.com](https://dicewarepwd.com/) works under the hood, it is explained over there [How It Works](https://github.com/gsempe/diceware/wiki/Diceware-Password-Generator-How-It-Works)

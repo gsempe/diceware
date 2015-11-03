@@ -1,0 +1,39 @@
+{{template "header" . }}
+<div class="layout-intro">
+	<div class="layout-left">
+		<h1>DICEWARE PASSWORD GENERATOR</h1>
+		<p>Diceware Password generator builds passphrases strong, secure and easy to remember. It uses the <a rel="nofollow" target="_blank" href="http://diceware.com" id="dl">Diceware</a> methodology but without the hassle to get real dices.</p>
+		<h1>PERFECT RANDOMNESS</h1>
+		<p>In computer sciences, this randomness is called entropy. If you want to know how it works, read details over there <a target="_blank" href="https://github.com/gsempe/diceware/wiki/Diceware-Password-Generator-How-It-Works">Diceware Password Generator How It Works</a>.</p>
+		<p>To generate a unique passphrase, select the language you want and clic on start.</p>
+		<div>
+			<a id="menu-lang" href="#">ENGLISH</a><br>
+			<ul id="list-lang" class="hidden">
+				<li><a id="en-lang" href="#">English
+				</a></li>
+				<li><a id="fr-lang" href="#">French
+				</a></li>
+			</ul>
+		</div>
+		<a id="btn-start" href="">START</a>
+	</div><!-- To make the 50% inline possible
+	--><div class="layout-right">
+		<div>
+			<img  id="mobile-preview" src="img/phone@2x.png" alt=""></img>
+		</div>
+	</div>
+</div>
+<div class="layout-generate hidden">
+		<object id="finger" type="image/svg+xml" data='data:image/svg+xml;charset=US-ASCII,%3Csvg%20id%3D%22Layer_1%22%20data-name%3D%22Layer%201%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2023%2037%22%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill%3Anone%3Bclip-rule%3Aevenodd%3B%7D.cls-2%7Bclip-path%3Aurl%28%23clip-path%29%3B%7D.cls-3%7Bfill%3A%23231f20%3B%7D.cls-4%7Bclip-path%3Aurl%28%23clip-path-2%29%3B%7D%3C/style%3E%3CclipPath%20id%3D%22clip-path%22%3E%3Cpath%20class%3D%22cls-1%22%20d%3D%22M21.17%2026.9l-1.42%207.64H8.8L3%2025.88a1.91%201.91%200%200%201-.22-1.64.37.37%200%200%201%20.39-.24c1.14%200%202.5.38%205.44%204.91L10%2031.07V12a1.48%201.48%200%200%201%201.49-1.48A1.51%201.51%200%200%201%2013%2012v9.54L20.2%2024c1.05.34%201.24%201.73.97%202.9zm-.49-4.32l-6.19-2.08V12a3%203%200%200%200-6%200v14.15c-2.23-3-3.73-3.61-5.32-3.61a1.85%201.85%200%200%200-1.71%201%203.33%203.33%200%200%200%20.29%203.19L8%2036h13l1.64-8.83c.36-1.76-.03-3.97-1.97-4.59z%22/%3E%3C/clipPath%3E%3CclipPath%20id%3D%22clip-path-2%22%3E%3Cpath%20class%3D%22cls-1%22%20d%3D%22M4.48%2018.18a9.75%209.75%200%201%201%2013.79%200l1.06%201.06a11.25%2011.25%200%201%200-15.91%200l1.06-1.06%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cpath%20class%3D%22cls-2%20cls-3%22%20d%3D%22M-3.83%204.04h31.6v37h-31.6z%22/%3E%3Cpath%20class%3D%22cls-4%20cls-3%22%20d%3D%22M-4.88-4.96h32.5v29.2h-32.5z%22/%3E%3C/svg%3E'>
+		</object>
+		<div id="percentage">
+		</div>
+		<div id="description">
+			<h2>Move your mouse to generate</h2>
+		</div>
+		<div id="bar">
+		</div>
+		<div id="result">
+		</div>
+</div>
+{{template "footer" . }}

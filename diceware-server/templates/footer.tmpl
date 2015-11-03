@@ -1,0 +1,205 @@
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+
+	<script>
+		random.addEventListener(random.PROGRESS_EVENT, function(event) {
+			progress(event.percent);
+		});
+		random.addEventListener(random.READY_EVENT, function(event) {
+			$('#description').children('h2').html('we are building your passphrase');
+			progress(100);
+			password();
+			random.stopCollection();
+			ga('send', {
+				hitType: 'event',
+				eventCategory: 'Generation',
+				eventAction: 'cick',
+				eventLabel: 'end'
+			});
+		});
+		function progress(p) {
+
+			if (p < 3) {
+				$('#percentage').addClass('hidden');
+				$('#finger').removeClass('hidden');
+			} else {
+				$('#percentage').removeClass('hidden');
+				$('#finger').addClass('hidden');
+				$('#percentage').html(p+'%');
+			}
+			if (p < 3)  {
+				$('#bar').css('width', '1%');
+			} else {
+				$('#bar').css('width', (p*3/4) + '%');
+			}
+		}
+		function password() {
+
+			e = [].slice.call(random.entropy()); // Convert the uint8Array to an array, cf. http://stackoverflow.com/a/29676964/21052
+			lang = $('#menu-lang').data("lang");
+
+			function success(data) {
+				$('#description').children('h2').html('your passphrase is ready!');
+				openLabelP = "<p class='result-label'>";
+				openValueP = function(t) {
+					return "<textarea readonly rows='1' class='result-value' id='" + t + "'>";
+				};
+				closeLabelP = "</p>";
+				closeValueP = function(t) {
+					return "</textarea><div class='result-copy' data-copy-target='" + t + "'></div>";
+				};
+				passphraseIs = "your passphrase is:";
+				passphraseAlternatives = "You would use the first form below or one of the following ones that improve your passphrase strength:";
+				passphraseNormalSpace = "Normal version, space separated:";
+				passphraseNormalDash = "Dash separated version:";
+				passphraseCapSpace = "Capitalized version:";
+				passphraseCapDash = "Capitalized and dash separated version:";
+				p1 = data["Passphrase"].join(" ");
+				p2 = data["Passphrase"].join(" ");
+				p3 = data["Passphrase"].join("-");
+				p4 = data["Passphrase"].map(function(s) {return s.charAt(0).toUpperCase() + s.slice(1); }).join(" ");
+				p5 = data["Passphrase"].map(function(s) {return s.charAt(0).toUpperCase() + s.slice(1); }).join("-");
+				p1Id = "ppresult"
+				p2Id = "ppnormal"
+				p3Id = "ppdash"
+				p4Id = "ppcap"
+				p5Id = "ppcapdash"
+				result = openLabelP + passphraseIs + closeLabelP +
+					openValueP(p1Id) + p1 + closeValueP(p1Id) +
+					openLabelP + passphraseAlternatives + closeLabelP +
+					openLabelP + passphraseNormalSpace + closeLabelP +
+					openValueP(p2Id) + p2 + closeValueP(p2Id) +
+					openLabelP + passphraseNormalDash + closeLabelP +
+					openValueP(p3Id) + p3 + closeValueP(p3Id) +
+					openLabelP + passphraseCapSpace + closeLabelP +
+					openValueP(p4Id) + p4 + closeValueP(p4Id) +
+					openLabelP + passphraseCapDash + closeLabelP +
+					openValueP(p5Id) + p5 + closeValueP(p5Id);
+				$('#result').html(result);
+
+				$("#" + p1Id + ", #" + p2Id + ", #" + p3Id + ", #" + p4Id + ", #" + p5Id).click(function(event) {
+					selectText(event.target.id);
+					ga('send', {
+						hitType: 'event',
+						eventCategory: 'Generation',
+						eventAction: 'cick',
+						eventLabel: 'select',
+						eventValue: 'text'
+					});
+				});
+				$("#" + p1Id).attr('cols', p1.length);
+				$("#" + p2Id).attr('cols', p2.length);
+				$("#" + p3Id).attr('cols', p3.length);
+				$("#" + p4Id).attr('cols', p4.length);
+				$("#" + p5Id).attr('cols', p5.length);
+				$(".result-copy").click(function(event) {
+					targetId = $(this).data("copy-target");
+					selectText(targetId);
+					ga('send', {
+						hitType: 'event',
+						eventCategory: 'Generation',
+						eventAction: 'cick',
+						eventLabel: 'select',
+						eventValue: 'icon'
+					});
+				});
+			}
+			$.ajax({
+				url:"api/pwd",
+				type:"POST",
+				data:JSON.stringify({length: 7, entropy: e, language: lang}),
+				contentType:"application/json; charset=utf-8",
+				dataType:"json",
+				success: success
+			});
+		}
+		$( document ).ready(function() {
+			$('#menu-lang').data("lang", "en");
+			$('#menu-lang').click(function(event) {
+				if ($('#list-lang').hasClass("hidden")) {
+					ga('send', {
+						hitType: 'event',
+						eventCategory: 'Languages',
+						eventAction: 'cick',
+						eventLabel: 'Show Languages'
+					});
+				}
+				$('#list-lang').toggleClass("hidden")
+				event.preventDefault();
+			});
+			$('#en-lang').click(function(event) {
+				$('#menu-lang').data("lang", "en");
+				$('#menu-lang').html("english");
+				$('#list-lang').toggleClass("hidden");
+				ga('send', {
+					hitType: 'event',
+					eventCategory: 'Languages',
+					eventAction: 'cick',
+					eventLabel: 'Select Language',
+					eventValue: 'en'
+				});
+				event.preventDefault();
+			});
+			$('#fr-lang').click(function(event) {
+				$('#menu-lang').data("lang", "fr");
+				$('#menu-lang').html("french");
+				$('#list-lang').toggleClass("hidden");
+				event.preventDefault();
+				ga('send', {
+					hitType: 'event',
+					eventCategory: 'Languages',
+					eventAction: 'cick',
+					eventLabel: 'Select Language',
+					eventValue: 'fr'
+				});
+			});
+			$('#btn-start').click(function(event) {
+				if (Modernizr.touch) {
+					$('#description').children('h2').html('Move your finger to generate');
+				} else {
+					$('#description').children('h2').html('Move your mouse to generate');
+				}
+				$("html, body").animate({ scrollTop: 0 });
+				random.startCollection();
+				//$('.layout-left').addClass("left-anim");
+				$('#bar').css('width', '1%');
+				$('.layout-left').css({
+					  'transition-property': 'transform opacity',
+					  'transition-duration': '300ms',
+					  'opacity': '0',
+					  'transform': 'translate(-100px, 0px)'
+				}).on('transitionend', function() {
+					$('.layout-left').addClass("hidden");
+					$('.layout-generate').removeClass("hidden").animate({'opacity': 1}, 200);
+				});
+				$('.layout-right').css({
+					  'transition-property': 'transform opacity',
+					  'transition-duration': '300ms',
+					  'opacity': '0',
+					  'transform': 'translate(100px, 0px)'
+				}).on('transitionend', function() {
+					$('.layout-right').addClass("hidden")
+				});
+				ga('send', {
+					hitType: 'event',
+					eventCategory: 'Generation',
+					eventAction: 'cick',
+					eventLabel: 'Start'
+				});
+				event.preventDefault();
+			});
+		});
+	</script>
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-75705959-1','auto');ga('send','pageview');
+        </script>
+    </body>

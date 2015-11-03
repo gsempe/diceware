@@ -1,0 +1,7 @@
+localhost:8080
+gzip
+log log/access.log
+proxy /api localhost:8082 {
+	without /api
+}
+proxy / localhost:8081
